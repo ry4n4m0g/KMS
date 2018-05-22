@@ -5,7 +5,9 @@ import (
 	"time"
 
 	"github.com/epointpayment/key_management_system/app/models"
+
 	dbx "github.com/go-ozzo/ozzo-dbx"
+	"github.com/go-sql-driver/mysql"
 )
 
 // DB is the database handler
@@ -46,6 +48,9 @@ func (us *UserService) Create(username string, password string, programID int) (
 
 	err = tx.Model(user).Insert()
 	if err != nil {
+		if err.(*mysql.MySQLError).Number == 1062 {
+			err = ErrUserExists
+		}
 		tx.Rollback()
 		return
 	}
