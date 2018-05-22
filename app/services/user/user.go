@@ -35,6 +35,11 @@ func Load(userID int) *UserService {
 func (us *UserService) Create(username string, password string, programID int) (user *models.User, err error) {
 	user = new(models.User)
 
+	if programID <= 0 {
+		err = ErrInvalidProgramID
+		return
+	}
+
 	// Insert into database
 	tx, err := DB.Begin()
 	if err != nil {

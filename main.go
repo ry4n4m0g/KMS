@@ -28,7 +28,7 @@ func init() {
 	flag.BoolVar(&createUser, "createUser", false, "create a new user")
 	flag.StringVar(&username, "username", "", "username for new user")
 	flag.StringVar(&password, "password", "", "password for new user")
-	flag.IntVar(&programID, "programID", 1, "")
+	flag.IntVar(&programID, "programID", 0, "")
 
 	flag.Parse()
 }
