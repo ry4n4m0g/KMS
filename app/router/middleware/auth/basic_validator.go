@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"errors"
 	"strconv"
 
 	API "github.com/epointpayment/key_management_system/app/services/api"
@@ -16,7 +15,7 @@ func BasicValidator(username, password string, c echo.Context) (isValid bool, er
 
 	programID, err := strconv.Atoi(c.QueryParam("program_id"))
 	if err != nil {
-		err = errors.New("Invalid Program ID")
+		err = User.ErrInvalidProgramID
 		return
 	}
 

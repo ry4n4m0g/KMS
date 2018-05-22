@@ -29,6 +29,10 @@ func (r *Router) appendErrorHandler() {
 			code = http.StatusNotFound
 		case User.ErrUserNotFound.Error():
 			code = http.StatusNotFound
+		case User.ErrInvalidProgramID.Error():
+			code = http.StatusBadRequest
+		case User.ErrUserExists.Error():
+			code = http.StatusBadRequest
 		default:
 			message = "Internal Error"
 		}
