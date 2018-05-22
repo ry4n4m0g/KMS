@@ -4,6 +4,9 @@ import (
 	"net/http"
 
 	"github.com/epointpayment/key_management_system/app/controllers"
+	API "github.com/epointpayment/key_management_system/app/services/api"
+	Key "github.com/epointpayment/key_management_system/app/services/key"
+	User "github.com/epointpayment/key_management_system/app/services/user"
 
 	"github.com/labstack/echo"
 )
@@ -20,6 +23,14 @@ func (r *Router) appendErrorHandler() {
 
 		// Override status code based on error responses
 		switch message {
+		case API.ErrInvalidCredentials.Error():
+			code = http.StatusForbidden
+		case Key.ErrKeyNotFound.Error():
+			code = http.StatusNotFound
+		case User.ErrUserNotFound.Error():
+			code = http.StatusNotFound
+		default:
+			message = "Internal Error"
 		}
 
 		// Send error in a specific format

@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/epointpayment/key_management_system/app/database"
 	"github.com/epointpayment/key_management_system/app/services/key"
+	"github.com/epointpayment/key_management_system/app/services/user"
 
 	dbx "github.com/go-ozzo/ozzo-dbx"
 )
@@ -18,6 +19,7 @@ func New(DB *database.Database) error {
 	// Attach the database handler to service
 	db = DB.GetInstance()
 	key.DB = db
+	user.DB = db
 
 	return nil
 }

@@ -15,15 +15,17 @@ var DB *dbx.DB
 
 // KeyService is a service that manages keys
 type KeyService struct {
-	g *keygen.KeyGenService
+	userID int
+	g      *keygen.KeyGenService
 }
 
 // New creates an instance of the service
-func New() *KeyService {
+func New(userID int) *KeyService {
 	kg := keygen.New()
 
 	return &KeyService{
-		g: kg,
+		userID: userID,
+		g:      kg,
 	}
 }
 
@@ -43,6 +45,7 @@ func (ks *KeyService) Generate() (key *models.Key, err error) {
 		return
 	}
 
+	key.UserID = ks.userID
 	key.Key = str
 	key.DateCreated = time.Now().UTC()
 
@@ -61,7 +64,7 @@ func (ks *KeyService) Get(keyID int) (key *models.Key, err error) {
 	key = new(models.Key)
 
 	err = DB.Select().
-		Where(dbx.HashExp{"id": keyID}).
+		Where(dbx.HashExp{"id": keyID, "user_id": ks.userID}).
 		One(key)
 	if err != nil {
 		if err == sql.ErrNoRows {

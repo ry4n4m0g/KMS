@@ -9,6 +9,7 @@ type Keys []Key
 type Key struct {
 	ID          int       `json:"id"`
 	Key         string    `json:"key"`
+	UserID      int       `json:"-"`
 	DateCreated time.Time `json:"-"`
 }
 

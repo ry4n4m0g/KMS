@@ -1,7 +1,12 @@
 package auth
 
 import (
+	"errors"
+	"strconv"
+
 	API "github.com/epointpayment/key_management_system/app/services/api"
+	User "github.com/epointpayment/key_management_system/app/services/user"
+
 	"github.com/labstack/echo"
 )
 
@@ -9,6 +14,24 @@ import (
 func BasicValidator(username, password string, c echo.Context) (isValid bool, err error) {
 	sa := API.New()
 
-	isValid, err = sa.DoAuth(username, password)
+	programID, err := strconv.Atoi(c.QueryParam("program_id"))
+	if err != nil {
+		err = errors.New("Invalid Program ID")
+		return
+	}
+
+	isValid, err = sa.DoAuth(username, password, programID)
+	if !isValid || err != nil {
+		return
+	}
+
+	us := User.New()
+	user, err := us.GetByUsername(username, programID)
+	if err != nil {
+		return
+	}
+
+	c.Set("userID", user.ID)
+
 	return
 }

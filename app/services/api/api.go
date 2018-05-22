@@ -1,5 +1,9 @@
 package api
 
+import (
+	User "github.com/epointpayment/key_management_system/app/services/user"
+)
+
 // APIService is a service that manages the API access
 type APIService struct{}
 
@@ -9,12 +13,17 @@ func New() *APIService {
 }
 
 // DoAuth checks if a user's auth credentials are valid
-func (as *APIService) DoAuth(username, password string) (isValid bool, err error) {
-	authorizedUsers := make(map[string]string)
+func (as *APIService) DoAuth(username, password string, programID int) (isValid bool, err error) {
+	us := User.New()
+	user, err := us.GetByUsername(username, programID)
+	if err != nil {
+		if err == User.ErrUserNotFound {
+			err = ErrInvalidCredentials
+		}
+		return
+	}
 
-	authorizedUsers["EPOINT"] = "Oc3UmUZsK0"
-
-	if val, ok := authorizedUsers[username]; ok && val == password {
+	if user.Password == password {
 		isValid = true
 	}
 
