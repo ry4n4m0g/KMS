@@ -10,6 +10,6 @@ func (r *Router) appendRoutes() {
 	v1 := api.Group("/v1")
 
 	// Endpoints
-	v1.GET("/generate_key", r.c.GenerateKey)
-	v1.GET("/get_key", r.c.GetKey)
+	v1.GET("/key/generate_key", r.c.GenerateKey)
+	v1.GET("/key/get_key", r.c.GetKey)
 }
