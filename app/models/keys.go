@@ -5,7 +5,7 @@ import "time"
 // Keys is an array of Key entries
 type Keys []Key
 
-// Key contains information about a generated a key
+// Key contains information about a generated key
 type Key struct {
 	ID          int       `json:"id"`
 	Key         string    `json:"key"`

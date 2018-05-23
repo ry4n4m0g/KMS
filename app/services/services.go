@@ -16,8 +16,9 @@ type Services struct{}
 
 // New starts the service setup process
 func New(DB *database.Database) error {
-	// Attach the database handler to service
 	db = DB.GetInstance()
+
+	// Attach the database handler to service
 	key.DB = db
 	user.DB = db
 
