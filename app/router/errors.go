@@ -36,7 +36,10 @@ func (r *Router) appendErrorHandler() {
 		case User.ErrUserExists.Error():
 			code = http.StatusBadRequest
 		default:
-			message = "Internal Error"
+			// Unknown error
+			if _, ok := err.(*echo.HTTPError); !ok {
+				message = "Internal Error"
+			}
 		}
 
 		// Send error in a specific format
