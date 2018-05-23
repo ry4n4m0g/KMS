@@ -14,6 +14,7 @@ func (co Controllers) GetKey(c echo.Context) error {
 	// Get key ID
 	keyID, err := strconv.Atoi(c.QueryParam("id"))
 	if err != nil {
+		err = Key.ErrKeyInvalid
 		return err
 	}
 

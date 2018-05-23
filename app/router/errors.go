@@ -27,6 +27,8 @@ func (r *Router) appendErrorHandler() {
 			code = http.StatusForbidden
 		case Key.ErrKeyNotFound.Error():
 			code = http.StatusNotFound
+		case Key.ErrKeyInvalid.Error():
+			code = http.StatusBadRequest
 		case User.ErrUserNotFound.Error():
 			code = http.StatusNotFound
 		case User.ErrInvalidProgramID.Error():
