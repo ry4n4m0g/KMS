@@ -23,20 +23,26 @@ func (r *Router) appendErrorHandler() {
 
 		// Override status code based on error responses
 		switch message {
+		// API Service
 		case API.ErrInvalidCredentials.Error():
 			code = http.StatusForbidden
+
+		// Key Service
 		case Key.ErrKeyNotFound.Error():
 			code = http.StatusNotFound
 		case Key.ErrKeyInvalid.Error():
 			code = http.StatusBadRequest
+
+		// User Service
 		case User.ErrUserNotFound.Error():
 			code = http.StatusNotFound
 		case User.ErrInvalidProgramID.Error():
 			code = http.StatusBadRequest
 		case User.ErrUserExists.Error():
 			code = http.StatusBadRequest
+
+		// Unknown error
 		default:
-			// Unknown error
 			if _, ok := err.(*echo.HTTPError); !ok {
 				message = "Internal Error"
 			}
