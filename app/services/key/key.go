@@ -16,25 +16,22 @@ var DB *dbx.DB
 // KeyService is a service that manages keys
 type KeyService struct {
 	userID int
-	g      *keygen.KeyGenService
 }
 
 // New creates an instance of the service
 func New(userID int) *KeyService {
-	kg := keygen.New()
-
 	return &KeyService{
 		userID: userID,
-		g:      kg,
 	}
 }
 
 // Generate creates a new key and stores it in the database
-func (ks *KeyService) Generate() (key *models.Key, err error) {
+func (ks *KeyService) Generate(algorithm string, length int) (key *models.Key, err error) {
 	key = new(models.Key)
 
 	// Generate a key
-	str, err := ks.g.Generate()
+	kg := keygen.New(algorithm, length)
+	str, err := kg.Generate()
 	if err != nil {
 		return
 	}

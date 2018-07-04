@@ -6,6 +6,7 @@ import (
 	"github.com/epointpayment/key_management_system/app/controllers"
 	API "github.com/epointpayment/key_management_system/app/services/api"
 	Key "github.com/epointpayment/key_management_system/app/services/key"
+	KeyGen "github.com/epointpayment/key_management_system/app/services/keygen"
 	User "github.com/epointpayment/key_management_system/app/services/user"
 
 	"github.com/labstack/echo"
@@ -31,6 +32,12 @@ func (r *Router) appendErrorHandler() {
 		case Key.ErrKeyNotFound.Error():
 			code = http.StatusNotFound
 		case Key.ErrKeyInvalid.Error():
+			code = http.StatusBadRequest
+
+			// KeyGen Service
+		case KeyGen.ErrKeyAlgorithmInvalid.Error():
+			code = http.StatusBadRequest
+		case KeyGen.ErrKeyLengthInvalid.Error():
 			code = http.StatusBadRequest
 
 		// User Service

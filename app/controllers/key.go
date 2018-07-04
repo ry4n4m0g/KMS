@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	Key "github.com/epointpayment/key_management_system/app/services/key"
+	KeyGen "github.com/epointpayment/key_management_system/app/services/keygen"
 
 	"github.com/labstack/echo"
 )
@@ -38,8 +39,19 @@ func (co Controllers) GenerateKey(c echo.Context) error {
 	userID := c.Get("userID").(int)
 	ks := Key.New(userID)
 
+	// Get key algorithm
+	keyAlgorithm := c.QueryParam("algorithm")
+
+	// Get key length
+	queryKeyLength := c.QueryParam("length")
+	keyLength, err := strconv.Atoi(queryKeyLength)
+	if queryKeyLength != "" && err != nil {
+		err = KeyGen.ErrKeyLengthInvalid
+		return err
+	}
+
 	// Generate key
-	res, err := ks.Generate()
+	res, err := ks.Generate(keyAlgorithm, keyLength)
 	if err != nil {
 		return err
 	}
